@@ -1,12 +1,17 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require('mongoose' )
 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=> {
-    console.log('Database connected');
-}).catch((err)=>{
-    console.log('Error connecting to database');
-    console.log(err);
-});
+// Funcion para conectar la aplicacion con la base de datos MongoDB
+const connectDB = async () => {
+    try {
+        await mongoose. connect(process.env.MONGO_URI)
+        // Conexion exitosa
+        console. log('Conectado correctamente a MongoDB' )
+    } catch (error) {
+        // Error al conectar
+        console.error( 'Error al conectar con Mongodb: ', error.message)
 
-module.exports = mongoose;
+        // Detiene la ejecucion del servidor si ocurre un error critico
+        process.exit(1)
+    }
+}
+module. exports = connectDB

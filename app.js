@@ -1,3 +1,7 @@
+require("node:dns/promises").setServers(["1.1.1.1", "8.8.8.8"]);
+require('dotenv').config();
+const connectDB = require('./config/database'); // 1. Importas tu código
+connectDB(); // 2. La ejecutas para que se conecte al iniciar
 require('./config/database');
 var createError = require('http-errors');
 var express = require('express');
