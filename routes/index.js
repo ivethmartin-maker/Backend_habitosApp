@@ -7,8 +7,8 @@ router.get('/', function(req, res, next) {
 });
 router.get('/habits', async (req, res) => {
   try{
-  const habit = await Habit.find();
-    res.json(habit);
+  const habits = await Habit.find();
+    res.json(habits);
   }catch(err){
     res.status(400).json({message: 'Error creating habit' });
 }
