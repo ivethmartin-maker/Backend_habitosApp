@@ -16,7 +16,10 @@ var habitsRouter = require('./routes/habits');
 require('./config/database');
 
 var app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credential: true
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -11,7 +11,23 @@ const habitSchema = new mongoose.Schema({
     createdAt:{
         type: Date,
         default: Date.now
-    }
+    },
+    lasUpdate:{
+        type: Date,
+        default: Date.now
+    },
+    lastDone:{
+        type: Date,
+        default: Date.now
+    },      
+    days:{
+        type: Number,
+        default: 0
+    },
+     startedAt: {
+        type: Date,
+        default: Date.now
+     },
 });
 
 module.exports = mongoose.model('Habit', habitSchema);
