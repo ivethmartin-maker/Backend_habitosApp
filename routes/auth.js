@@ -1,8 +1,14 @@
+//REGISTRO DE USUARIO LOGIN
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcryptjs');
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+// POST: Registro de usuario
 router.post ('/register', async function (req, res, next){
     try {
     const { username, password } = req.body;
@@ -18,10 +24,11 @@ router.post ('/register', async function (req, res, next){
     res.status(201).json({ message: "Usuario registrado correctamente" });
 } catch (error) {
   console.log(error);
-    res.status(500).json({ error: "Error en el registro", "description":error.toString() });
+    res.status(500).json({ error: "Error en el registro", "description" :error.toString() });
 }
 });
 
+// POST: Login de usuario
 router.post('/login', async function(req, res, next) {
   try {
     const { username, password } = req.body;
@@ -38,19 +45,17 @@ router.post('/login', async function(req, res, next) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.cookie('habitToken', token, {
 
-      httpOnly: false, // Previene acceso desde JavaScript (XSS)
+      httpOnly: true, // Previene acceso desde JavaScript (XSS)
       secure: false, // Solo en HTTPS en producción
       sameSite: "lax", // Evita envío en otros sitios
       //secure: process.env.NODE_ENV === 'production', // Solo en HTTPS en producción
       //sameSite: 'Strict', // Evita envío en otros sitios
       maxAge: 7 * (24) * 60 * 60 * 1000 // 7 días de duración
   });
-    res.json({ message: "Inicio de sesión exitoso", token });
+  res.json({ message: "Inicio de sesión exitoso", token });
 } catch (error) {
     res.status(500).json({ error: "Error en el login", "description":error.toString() });
 }
 });
 
 module.exports = router;
-
-
