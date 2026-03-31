@@ -42,15 +42,23 @@ router.post('/login', async function(req, res, next) {
     if (!isMatch) return res.status(400).json({ error: "Contraseña incorrecta" });
 
     // Generar un JWT para la sesión
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+// 1. Generamos el token (usamos una clave por defecto si no hay variable de entorno)
+    const token = jwt.sign(
+        { userId: user._id }, 
+        process.env.JWT_SECRET || 'clave_secreta_local', 
+        { expiresIn: '7d' }
+    );
+
+    // 2. Detectamos el entorno automáticamente
     const isProduction = process.env.NODE_ENV === 'production';
 
+    // 3. Configuramos la cookie "inteligente"
     res.cookie("habitToken", token, {
-      httpOnly: false,
-      secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-  });
+        httpOnly: true, // Más seguro: impide que scripts maliciosos vean el token
+        secure: isProduction, // En Render será true (HTTPS), en tu PC será false
+        sameSite: isProduction ? 'none' : 'lax', // En Render 'none' permite el cruce de datos
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+    });
   
   res.json({ message: "Inicio de sesión exitoso", token });
 } catch (error) {
