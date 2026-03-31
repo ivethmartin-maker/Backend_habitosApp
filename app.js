@@ -45,7 +45,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
+app.get('/', (req, res) => {
+  res.send('¡Servidor de Iveth funcionando correctamente en Render!');
+});
 
 //  puerto que usará Render
 const PORT = process.env.PORT || 4000; 
