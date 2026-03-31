@@ -45,4 +45,15 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+
+//  puerto que usará Render
+const PORT = process.env.PORT || 4000; 
+
+//aplicación  funcione en ese puerto
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor ejecutándose en el puerto ${PORT}`);
+});
+
+// 3. Exportamos la app (esto siempre debe ir al final)
 module.exports = app;
